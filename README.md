@@ -171,12 +171,15 @@ As mentioned previously, it is important to understand if the forecast errors ar
 with a mean of zero and a constant variance. By plotting the model’s residuals in Figure 15, the mean is determined to be 0.0016 and roughly constant over time. To test for normality a histogram of the residuals and
 an overlaid density plot of a randomly generated normal distribution is produced using R code in Figure 16.
 
+<img width="700" alt="Screen Shot 2020-11-16 at 11 09 54 PM" src="https://user-images.githubusercontent.com/66921930/99345916-6c5e7300-2861-11eb-8f60-96a7423e4c59.png">
+<img width="718" alt="Screen Shot 2020-11-16 at 11 10 00 PM" src="https://user-images.githubusercontent.com/66921930/99345919-6cf70980-2861-11eb-97a7-a1d988edd820.png">
 
 
 Conclusions can be made by the outputted histogram in Figure 17 that the model is normally distributed
 with a mean of 0. Taking into consideration the multiple tests run on the ARIMA model for Lake Huron it can be
 concluded that the ARIMA(0,1,0) model is an acceptable predictive model for forecasting water levels.
 
+<img width="752" alt="Screen Shot 2020-11-16 at 11 10 20 PM" src="https://user-images.githubusercontent.com/66921930/99345920-6d8fa000-2861-11eb-8f2a-4150202dda4b.png">
 
 # Conclusion
 A significant portion of time series analysis revolves around smoothing the model and eliminating
