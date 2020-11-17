@@ -74,7 +74,7 @@ stability, production then made a onetime peak at almost 550 megaliters in the e
 productivity, the Australian beer company has seen a gradual downturn, barring some spikes in the late 1980s
 and early 1990s.
 
-
+<img width="762" alt="Screen Shot 2020-11-16 at 11 00 45 PM" src="https://user-images.githubusercontent.com/66921930/99345265-e4c43480-285f-11eb-8777-57021c015f5f.png">
 
 Forecasting and predictions are a main component for the application of statistics to time series data.
 Exponential smoothing techniques are one way of making forecasts, however when dealing with stationary
@@ -88,7 +88,7 @@ a times series another R dataset, LakeHuron is applied. The time series dataset 
 level for Lake Huron from 1875 to 1972. By plotting the dataset as seen in Figure 7, an understanding of how
 the data behaves can begin to be formed.
 
-
+<img width="689" alt="Screen Shot 2020-11-16 at 11 01 29 PM" src="https://user-images.githubusercontent.com/66921930/99345268-e55ccb00-285f-11eb-9516-6f4506fed224.png">
 
 The techniques and concepts of ARIMA models are utilized mainly for stationary time series as
 previously mentioned. Time series data that is riddled with trend and seasonality fluctuations may not be
@@ -101,7 +101,7 @@ differencing, or the removal of a linear trend, to remove the trend component. D
 in Figure 8. With first-differencing applied the series appears to be stationary in both mean and variance.
 Calculating the mean at a result near 0 reflects the now constant behavior over time.
 
-
+<img width="746" alt="Screen Shot 2020-11-16 at 11 02 01 PM" src="https://user-images.githubusercontent.com/66921930/99345270-e5f56180-285f-11eb-8ddb-daad413f3dae.png">
 
 
 # Time Series: ARIMA Model
@@ -118,6 +118,44 @@ exists in a dataset, which can result in exaggerated overfitting (Glen, 2016). B
 partial estimate of autocorrelation as seen in Figure 9, it can be understood if autocorrelation exists in a
 significant enough form to merit consideration.
 
+<img width="741" alt="Screen Shot 2020-11-16 at 11 02 40 PM" src="https://user-images.githubusercontent.com/66921930/99345273-e68df800-285f-11eb-9d6b-89e67c113c86.png">
 
+
+The first correlogram in Figure 10, describes the relationship between how autocorrelated the
+observations are in comparison to observations of prior time steps. Something worth noting, is the ACF at lag 0
+equals 1 by default and is purely a reference point (Holmes, Scheuerell & Ward, 2020). A default confidence interval of 95% is represented by the horizontal blue lines and the data showcases that the autocorrelation
+coefficients do not exceed the significance bounds. This leads to the conclusion that there is little evidence for
+autocorrelation. The second correlogram in Figure 10 represents a partial correlogram which takes into
+account the removal of the relationship of intervening observations. For the Lake Huron data, the partial
+correlogram shows that the partial correlations at time lags 2 and 20 exceed the significance bounds resulting
+in two lagged values, tailing off to zero between each.
+
+
+
+In order to conclude the ARIMA(p,d,q) model, the principle of parsimony needs to be considered. The
+principle of parsimony assumes that the best model is the model with the fewest parameters. Due to the
+correlograms showcased in Figure 10 resulting in the autocorrelation coefficients generally tailing to zero, the p
+and q values are determined to be 0 themselves. This can be further validated by applying the R code in
+Figure 11, the result of which confirms the optimal ARIMA model at ARIMA(0,1,0).
+
+
+
+
+# Time Series: ARIMA Forecasting
+Once the ARIMA(p,d,q) model has been identified and the parameters estimated, the model is ready for
+use as a predictive model for making forecasts (Coghlan, 2010). By applying the forecast function in R as
+shown in Figure 12, the observed water levels over 97 years at Lake Huron as well as the predicted water
+levels for the next five years is represented in Figure 13’s plot. The data forecasts the water level at Lake
+Huron to be 579.96 feet for the next five years with prediction intervals at 80% and 95%.
+
+
+
+
+An important step in ARIMA models is evaluating the output to understand whether the forecast errors
+of the model are normally distributed and whether there are correlations between the errors. Taking necessary
+steps, ARIMA models can be evaluated to ensure their viability as a predictive model. By creating a
+correlogram of the forecast errors, as seen in Figure 14, it is observed that the coefficients stay within the
+significance bounds. In addition to a correlogram a Ljung-Box test can be utilized to demonstrate if the model
+demonstrates lack of fit.
 
 
