@@ -1,0 +1,106 @@
+#Install and load libraries
+install.packages("fpp")
+install.packages("forecast")
+library(fpp)
+library(forecast)
+library(FSA)
+library(TTR)
+library(ggplot2)
+library(stats)
+library(lmtest)
+
+
+#Part A: Decompose seasonal time series data and subtract that effect from the data
+
+#1. Identify an appropriate time series data set, this can be a data set in R or a data set you find.
+data(ausbeer)
+head(ausbeer)
+ausbeer
+
+#2. Use R to decompose the seasonal time series and seasonally adjust to subtract the seasonal components from the time series.
+
+#Convert data to time series object and plot
+beer_ts<-ts(ausbeer, start=c(1956,1), end=c(2008,3), frequency = 4)
+plot(beer_ts)
+
+#Decompose time series
+beer_decomp<- decompose(beer_ts)
+plot(beer_decomp)
+
+#Seasonally adjust
+beer_seasonally_adj<- beer_ts - beer_decomp$seasonal
+plot(beer_seasonally_adj)
+
+#Part B: Address issues of correlations between successive values of the time series
+
+#1. Identify an appropriate data set
+lake <- (LakeHuron)
+plot(lake,
+     main = "Water Level of Lake Huron between 1875 - 1972",
+     xlab = "Year",
+     ylab = "Water Level (in feet)")
+
+
+#2. Use the R functions we learned in class to find a good ARIMA or exponential model. Produce a forecast with it
+
+#Differencing the time series
+lake.diff <- diff(lake, differences=1)
+plot.ts(lake.diff,
+        main = "First-Difference: Water Level of Lake Huron between 1875 - 1972",
+        xlab = "Year",
+        ylab = "Water Level (in feet)")
+mean(lake.diff)
+
+#Selecting a Candidate ARIMA Model by plotting a correlogram and partial correlogrm
+acf(lake.diff, lag.max=20)
+acf(lake.diff, lag.max=20, plot=FALSE)
+
+pacf(lake.diff, lag.max=20)
+pacf(lake.diff, lag.max=20, plot=FALSE)
+
+#Validation through auto.arima
+auto.arima(lake)
+
+#Forecasting Using an ARIMA Model
+lake.arima <- arima(lake, order=c(0,1,0))
+lake.arima
+
+lake.forecast <- forecast(lake.arima, h=5)
+summary(lake.forecast)
+plot(forecast(lake.arima, h =5),
+     main = "Forecast of Lake Huron using ARIMA(0,1,0)",
+     ylab = "Water Level (feet)",
+     xlab = "Year")
+
+#Evaluating ARIMA Model
+#Test for forecast fit
+acf(lake.forecast$residuals, lag.max=20)
+Box.test(lake.forecast$residuals, lag=20, type="Ljung-Box")
+
+#Plotting the model's residuals
+plot.ts(lake.forecast$residuals,
+        main = "Time Series of Residuals of ARIMA(0,1,0) Model",
+        ylab = "Residuals",
+        xlab = "Time")
+mean(lake.forecast$residuals)
+
+#Plotting forecast errors with a histogram
+plotForecastErrors<- function(forecasterrors)
+{
+mybinsize <- IQR(forecasterrors)/4
+mysd   <- sd(forecasterrors)
+mymin  <- min(forecasterrors) - mysd*5
+mymax  <- max(forecasterrors) + mysd*3
+mynorm <- rnorm(10000, mean=0, sd=mysd)
+mymin2 <- min(mynorm)
+mymax2 <- max(mynorm)
+if (mymin2 < mymin) { mymin <- mymin2 }
+if (mymax2 > mymax) { mymax <- mymax2 }
+mybins <- seq(mymin, mymax, mybinsize)
+hist(forecasterrors, col="red", freq=FALSE, breaks=mybins)
+myhist <- hist(mynorm, plot=FALSE, breaks=mybins)
+points(myhist$mids, myhist$density, type="l", col="blue", lwd=2)
+}
+
+plotForecastErrors(lake.forecast$residuals)
+
