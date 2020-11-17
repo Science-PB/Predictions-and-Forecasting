@@ -130,7 +130,7 @@ account the removal of the relationship of intervening observations. For the Lak
 correlogram shows that the partial correlations at time lags 2 and 20 exceed the significance bounds resulting
 in two lagged values, tailing off to zero between each.
 
-
+<img width="744" alt="Screen Shot 2020-11-16 at 11 05 31 PM" src="https://user-images.githubusercontent.com/66921930/99345537-8c416700-2860-11eb-8f66-4a1214c5dfd5.png">
 
 In order to conclude the ARIMA(p,d,q) model, the principle of parsimony needs to be considered. The
 principle of parsimony assumes that the best model is the model with the fewest parameters. Due to the
@@ -138,7 +138,7 @@ correlograms showcased in Figure 10 resulting in the autocorrelation coefficient
 and q values are determined to be 0 themselves. This can be further validated by applying the R code in
 Figure 11, the result of which confirms the optimal ARIMA model at ARIMA(0,1,0).
 
-
+<img width="668" alt="Screen Shot 2020-11-16 at 11 05 54 PM" src="https://user-images.githubusercontent.com/66921930/99345539-8cd9fd80-2860-11eb-8d9f-4a90b14d4e34.png">
 
 
 # Time Series: ARIMA Forecasting
@@ -148,7 +148,8 @@ shown in Figure 12, the observed water levels over 97 years at Lake Huron as wel
 levels for the next five years is represented in Figure 13’s plot. The data forecasts the water level at Lake
 Huron to be 579.96 feet for the next five years with prediction intervals at 80% and 95%.
 
-
+<img width="742" alt="Screen Shot 2020-11-16 at 11 06 46 PM" src="https://user-images.githubusercontent.com/66921930/99345540-8cd9fd80-2860-11eb-8349-b9b55b6d7230.png">
+<img width="738" alt="Screen Shot 2020-11-16 at 11 06 54 PM" src="https://user-images.githubusercontent.com/66921930/99345544-8e0b2a80-2860-11eb-9f5f-37ca3972d800.png">
 
 
 An important step in ARIMA models is evaluating the output to understand whether the forecast errors
@@ -158,4 +159,72 @@ correlogram of the forecast errors, as seen in Figure 14, it is observed that th
 significance bounds. In addition to a correlogram a Ljung-Box test can be utilized to demonstrate if the model
 demonstrates lack of fit.
 
+<img width="724" alt="Screen Shot 2020-11-16 at 11 07 22 PM" src="https://user-images.githubusercontent.com/66921930/99345546-8e0b2a80-2860-11eb-9277-4b02675b84f6.png">
 
+A Ljung-Box test is a hypothesis test used to determine whether or not a model’s autocorrelations for
+the errors are non-zero (Glen, 2018). Being a hypothesis test, the model has a null and alternative hypothesis
+placed on it. The null hypothesis represents the model not showing a lack of fit while the alternative is that a
+lack of fit does exist. Demonstrated by the code in Figure 14, the p-value is determined to be 0.1457. At a
+value higher than the significance value of 0.05, the claim can be made that there is not enough evidence to
+reject the null hypothesis and therefore the model is appropriate to be used as a predictive model.
+As mentioned previously, it is important to understand if the forecast errors are normally distributed,
+with a mean of zero and a constant variance. By plotting the model’s residuals in Figure 15, the mean is determined to be 0.0016 and roughly constant over time. To test for normality a histogram of the residuals and
+an overlaid density plot of a randomly generated normal distribution is produced using R code in Figure 16.
+
+
+
+Conclusions can be made by the outputted histogram in Figure 17 that the model is normally distributed
+with a mean of 0. Taking into consideration the multiple tests run on the ARIMA model for Lake Huron it can be
+concluded that the ARIMA(0,1,0) model is an acceptable predictive model for forecasting water levels.
+
+
+# Conclusion
+A significant portion of time series analysis revolves around smoothing the model and eliminating
+seasonality and even trend components. The purpose behind which is to be able to make more reliable
+predictions. Time series data can provide significant seasonal variation, as with the Australian beer production
+example but can also be undetectable such as in the water levels of Lake Huron example. The removal of
+seasonality, via decomposing or differencing, allows the signal used for forecasting to not be obscured by the
+repetitious cycle that seasonality embeds creating a more effective model (Brownlee, 2016).
+Much of the science behind time series data takes into account visualizations. As an example, a plot
+was used early on to determine the existence of seasonality in Australian beer production, while with Lake
+Huron it was used in the decision to apply first-differencing and remove the linear trend. A common practice is
+to evaluate the model via a plot during different stages to understand component estimates as well as
+understand what the elimination of components does to the data and help determine next steps. Going back to
+basics, visual representations can quickly tell a person a lot about a dataset, particularly with time series.
+With the pursuit of predictive modeling and forecasting in mind, potential drawbacks do exist with time
+series methods. For starters the methods can rely heavily on old data which can skew forecasts if no longer
+relevant. In addition, time series analysis cannot fully adjust various factors that affect fluctuations in a series
+(Das, 2019). What is important to remember is that statistics is a method to make educational decisions, it
+does not claim to be absolute truth in its applications. Time series is not an exception in this case. Instead it is
+a tool utilized by many businesses and economists to make plausible interpretations from data that can then be
+utilized to drive real world actions.
+
+# References
+Nist Sematech. (n.d.). Introduction to Time Series Analysis. Nist Sematech. Retrieved from:
+https://www.itl.nist.gov/div898/handbook/pmc/section4/pmc4.htm
+
+Coghlan, A. (2010). Using R for Time Series Analysis. Read the Docs. Retrieved from: https://a-little-book-of-r-
+for-time-series.readthedocs.io/en/latest/src/timeseries.html#decomposing-time-series
+
+Federal Reserve Bank of Dallas. (n.d.). Seasonally Adjusting Data. Federal Reserve Bank of Dallas. Retrieved
+from: https://www.dallasfed.org/research/basics/seasonally.aspx
+
+Chen, J. (2019, Apr 13). Autoregressive Integrated Moving Average (ARIMA). Investopedia. Retrieved from:
+https://www.investopedia.com/terms/a/autoregressive-integrated-moving-average-arima.asp
+
+Hyndman, R. and Athanasopoulos, G. (2018). Forecasting: principles and practice (2nd ed.). Melbourne,
+Australia: OTexts. Retrieved from: https://otexts.com/fpp2/stationarity.html
+
+Holmes, E., Scheuerell, M. and Ward, E. (2020, Feb 3). Applied Time Series Analysis for Fisheries and
+
+Environmental Sciences. Bookdown. Retrieved from: https://nwfsc-timeseries.github.io/atsa-labs/sec-tslab-
+differencing-to-remove-a-trend-or-seasonal-effects.html
+
+Glen, S. (2018, Sep 7). Ljung Box Test: Definition. Statistics How To. Retrieved from:
+https://www.statisticshowto.com/ljung-box-test/
+
+Glen. S. (2016, Aug 23). Correlogram / Auto Correlation Function ACF Plot: Definition in Plain English.
+Statistics How To. Retrieved from: https://www.statisticshowto.com/correlogram/
+
+Das, R. (2019, Feb 13). Advantages and Disadvantages of time series. Physics Pie. Retrieved from:
+https://thephysicspi.blogspot.com/2019/02/advantages-and-disadvantages-of-time.html
